@@ -58,21 +58,18 @@
     overflow:hidden;
   }
 
-  #screen {
-    position: absolute;
-    width: var(--screen-w);
-    height: var(--screen-h);
-    top: var(--screen-top-calc);
-    left: 50%;
-    transform: translateX(-50%);
-    cursor: pointer;
-    z-index: 20;
-    user-select: none;
-    -webkit-user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+#screen {
+  all: unset;                /* removes all default styles */
+  position: absolute;
+  width: var(--screen-w);
+  height: var(--screen-h);
+  top: var(--screen-top-calc);
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  z-index: 20;
+  display: block;
+}
 
   #screen-content{
     width:100%;
