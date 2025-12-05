@@ -1,24 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Murasaki Radar</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Murasaki Radar</title>
+
+<!-- The Tojo Captioner -->
+<style>
+  @font-face {
+    font-family: "TheTojoCaptioner";
+    src: url("assets/fonts/TheTojoCaptioner-Regular.ttf") format("truetype");
+    font-display: swap;
+  }
+
+  :root{
+    --screen-w: 346px;
+    --screen-h: 320px;
+    /* screen top offset: 74px above center -> top = 50% - 74px - (screen_h/2) = calc(50% - 234px) */
+    --screen-top-calc: calc(50% - 234px);
+    --accent-purple: #7d4071;
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    background:#000;
+    font-family:"TheTojoCaptioner", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  body{
+    background-image: url("assets/img/terminal.png");
+    background-size: cover;              /* fill viewport (cropped if aspect ratio differs) */
+    background-position: center center;  /* center the image */
+    background-repeat: no-repeat;
+  }
+
+  /* credits link (top-right) */
+  #credits-link{
+    position: fixed;
+    top: 12px;
+    right: 14px;
+    z-index: 30;
+    color: var(--accent-purple);
+    font-size: 14px;
+    text-decoration: none;
+    padding: 6px 8px;
+  }
+  #credits-link:hover{ text-decoration: underline; }
+
+  /* container for interactive screen region (transparent hitbox) */
+  #pc-container{
+    position: relative;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+  }
+
+  #screen {
+    position: absolute;
+    width: var(--screen-w);
+    height: var(--screen-h);
+    top: var(--screen-top-calc);
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    z-index: 20;
+    user-select: none;
+    -webkit-user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #screen-content{
+    width:100%;
+    height:100%;
+    background: transparent;
+    display:block;
+    overflow:hidden;
+  }
+
+  #screen-content img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+    display:block;
+    pointer-events:none; /* clicks are handled by #screen */
+  }
+
+  #screen:focus{ outline: 2px solid rgba(125,64,113,0.45); }
+
+  .fade-in {
+    animation: fadeIn 420ms ease forwards;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(1.01); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* small mobile / narrow-screen tweak: scale hitbox a touch smaller so it doesn't overflow */
+  @media (max-width:480px){
+    :root{ --screen-w: 240px; --screen-h: 222px; --screen-top-calc: calc(50% - 74px - 111px); }
+    #credits-link{ font-size:13px; }
+  }
+</style>
 </head>
 <body>
-  <a href="credits.html" id="credits-link">Credits</a>
 
-  <!-- Background PC + interactive screen -->
-  <div id="pc-container">
-    <div id="screen" onclick="activateRadar()">
-      <img id="screen-image" src="assets/img/terminal.png" alt="Just a crappy 90s PC.">
-    </div>
+  <a id="credits-link" href="credits.html" rel="noopener">Credits</a>
+
+  <div id="pc-container" aria-hidden="false">
+
+    <button id="screen" aria-label="Activate radar" title="Click the monitor screen to scan for Murasaki">
+      <div id="screen-content" role="img" aria-live="polite"></div>
+    </button>
   </div>
 
-  <!-- Audio element -->
-  <audio id="sonar-sound" src="assets/music/sonar.mp3" preload="auto"></audio>
+  <!-- sonar audio (preload) -->
+  <audio id="sonar-sound" preload="auto" src="assets/music/sonar.mp3"></audio>
 
-  <script src="script.js"></script>
+  <script>
+
+    (function(){
+      const screenButton = document.getElementById('screen');
+      const screenContent = document.getElementById('screen-content');
+      const sonarAudio = document.getElementById('sonar-sound');
+
+      // Assets (relative paths — ensure these files exist)
+      const RADAR_GIF = "assets/img/radar.gif";
+      const FOUND_IMG = "assets/img/foundhisass.png";
+
+      // results pages (edit/addfulllist paths as needed)
+      const RESULT_PAGES = [
+        "results/fighting.html",
+        "results/kensetsu.html",
+        "results/partyhard.html",
+        "results/helpinghand.html",
+        "results/evilplan.html",
+        "results/pain.html"
+      ];
+
+      // durations (ms)
+      const SONAR_DURATION = 10000;   // 10 seconds scanning
+      const FOUND_WAIT = 3000;       // 3 seconds before redirect
+
+      // guard to prevent repeated clicks while active
+      let active = false;
+
+      function showOnScreen(src, alt){
+        screenContent.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = alt || '';
+        img.className = 'fade-in';
+        // ensure image scaling
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        screenContent.appendChild(img);
+      }
+
+      async function activateRadar(e){
+        if(active) return;
+        active = true;
+
+        showOnScreen(RADAR_GIF, 'Radar scanning');
+
+        try {
+          sonarAudio.currentTime = 0;
+          const playPromise = sonarAudio.play();
+          if(playPromise !== undefined){
+            await playPromise.catch(()=>{ /* autoplay blocked — ignore */ });
+          }
+        } catch(err){
+          // audio failed, continue visual sequence
+        }
+
+        // after SONAR_DURATION, show "Murasaki Located"
+        setTimeout(() => {
+          // stop audio smoothly
+          try{
+            sonarAudio.pause();
+            sonarAudio.currentTime = 0;
+          }catch(_){}
+
+          showOnScreen(FOUND_IMG, 'Murasaki Located');
+
+          // after a short wait, redirect to a random result page
+          setTimeout(() => {
+            const idx = Math.floor(Math.random() * RESULT_PAGES.length);
+            const dest = RESULT_PAGES[idx];
+            // redirect in same tab to dest
+            window.location.href = dest;
+          }, FOUND_WAIT);
+
+        }, SONAR_DURATION);
+      }
+      screenButton.addEventListener('click', activateRadar);
+      screenButton.addEventListener('keydown', (ev) => {
+        if(ev.key === 'Enter' || ev.key === ' '){
+          ev.preventDefault();
+          activateRadar();
+        }
+      });
+
+      screenButton.setAttribute('aria-pressed','false');
+    })();
+  </script>
 </body>
 </html>
