@@ -7,12 +7,12 @@
   const RADAR_GIF = "assets/img/radar.gif";
   const FOUND_IMG = "assets/img/foundhisass.png";
 
+  // Only five working result pages now
   const RESULT_PAGES = [
     "assets/results/fighting.html",
     "assets/results/kensetsu.html",
     "assets/results/partyhard.html",
     "assets/results/helpinghand.html",
-    "assets/results/evilplan.html",
     "assets/results/pain.html"
   ];
 
@@ -52,25 +52,20 @@
         sonarAudio.currentTime = 0;
       } catch (_) {}
 
-      // Instantly show "Murasaki Located"
       showOnScreen(FOUND_IMG, "Murasaki Located", false);
 
-      // Play second sound (dokodemo)
       try {
         dokodemoAudio.currentTime = 0;
         dokodemoAudio.play().catch(() => {});
       } catch (_) {}
 
-      // Redirect after short delay
       setTimeout(() => {
         const idx = Math.floor(Math.random() * RESULT_PAGES.length);
         window.location.href = RESULT_PAGES[idx];
       }, FOUND_WAIT);
-
     }, SONAR_DURATION);
   }
 
-  // Controls
   screenButton.addEventListener("click", activateRadar);
   screenButton.addEventListener("keydown", (ev) => {
     if (ev.key === "Enter" || ev.key === " ") {
