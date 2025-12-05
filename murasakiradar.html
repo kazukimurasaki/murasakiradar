@@ -86,13 +86,19 @@
     overflow: hidden;
   }
 
-  #screen-content img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    pointer-events: none;
-  }
+#screen-content img {
+  width: auto;
+  height: auto;
+  max-width: 65%;      /* adjust this number to make it smaller or larger */
+  max-height: 65%;
+  object-fit: contain;  /* preserves aspect ratio without cropping */
+  display: block;
+  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
 
   #screen:focus { outline: 2px solid rgba(125,64,113,0); }
 
