@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Murasaki Radar</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="credits.html" id="credits-link">Credits</a>
+
+  <!-- Background PC + interactive screen -->
+  <div id="pc-container">
+    <div id="screen" onclick="activateRadar()">
+      <img id="screen-image" src="assets/img/concept.png" alt="Retro PC">
+    </div>
+  </div>
+
+  <!-- Audio element -->
+  <audio id="sonar-sound" src="assets/music/sonar.mp3" preload="auto"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
