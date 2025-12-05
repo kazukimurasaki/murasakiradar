@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detected: Construction</title>
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body class="centered">
+  <h1>Building shit, just because he can.</h1>
+  <img src="../assets/results/webuildshit.png" alt="Murasaki Construction" style="max-width:600px;margin:20px 0;">
+  <p>Looks like he's supervising Murasaki Construction...<br>
+  Sometimes, you gotta work hard before you party hard.<br>
+  You're not wearing a hard hat, so you better leave before he catches you violating workplace safety.<br>
+  He's somehow crazy about that!</p>
+
+  <a href="../../murasakiradar.html" class="button">Find Murasaki Again?</a>
+
+  <audio id="bgm" autoplay loop>
+    <source src="../assets/music/majimakensetsu.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const bgm = document.getElementById("bgm");
+    bgm.addEventListener("loadedmetadata", () => {
+      const start = 4.476;
+      const end = 163.170;
+      bgm.currentTime = start;
+      bgm.addEventListener("timeupdate", () => {
+        if (bgm.currentTime >= end) bgm.currentTime = start;
+      });
+    });
+  </script>
+</body>
+</html>
