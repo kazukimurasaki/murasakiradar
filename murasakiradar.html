@@ -87,16 +87,14 @@
   }
 
 #screen-content img {
-  width: auto;
-  height: auto;
-  max-width: 65%;      /* adjust this number to make it smaller or larger */
-  max-height: 65%;
-  object-fit: contain;  /* preserves aspect ratio without cropping */
-  display: block;
-  margin: auto;
-  position: relative;
+  position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 92%;           /* Adjust this between 88–95% for perfect fit */
+  height: auto;
+  object-fit: contain;
+  display: block;
   pointer-events: none;
 }
 
