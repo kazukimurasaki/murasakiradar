@@ -11,7 +11,7 @@
   const RESULT_PAGES = [
     "assets/results/fighting.html",
     "assets/results/kensetsu.html",
-    "assets/results/partyhard.html",
+    "assets/results/sweetraveparty.html",
     "assets/results/helpinghand.html",
     "assets/results/pain.html"
   ];
