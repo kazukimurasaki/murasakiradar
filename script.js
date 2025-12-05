@@ -7,7 +7,6 @@
   const RADAR_GIF = "assets/img/radar.gif";
   const FOUND_IMG = "assets/img/foundhisass.png";
 
-  const RESULT_PAGES = [
 const RESULT_PAGES = [
   "assets/results/fighting.html",
   "assets/results/kensetsu.html",
