@@ -8,13 +8,14 @@
   const FOUND_IMG = "assets/img/foundhisass.png";
 
   const RESULT_PAGES = [
-    "results/fighting.html",
-    "results/kensetsu.html",
-    "results/partyhard.html",
-    "results/helpinghand.html",
-    "results/evilplan.html",
-    "results/pain.html"
-  ];
+const RESULT_PAGES = [
+  "assets/results/fighting.html",
+  "assets/results/kensetsu.html",
+  "assets/results/partyhard.html",
+  "assets/results/helpinghand.html",
+  "assets/results/evilplan.html",
+  "assets/results/pain.html"
+];
 
   const SONAR_DURATION = 9966; // 9.966 seconds
   const FOUND_WAIT = 3000;     // 3 seconds before redirect
