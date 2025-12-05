@@ -59,7 +59,7 @@
   }
 
 #screen {
-  all: unset;                /* removes all default styles */
+  all: unset;
   position: absolute;
   width: var(--screen-w);
   height: var(--screen-h);
@@ -69,6 +69,13 @@
   cursor: pointer;
   z-index: 20;
   display: block;
+}
+
+/* Remove focus/active outlines */
+#screen:focus,
+#screen:active {
+  outline: none;
+  box-shadow: none;
 }
 
   #screen-content{
