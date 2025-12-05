@@ -54,20 +54,20 @@ button:hover, .button:hover {
   position: relative;
   width: 100vw;
   height: 100vh;
-  background: url("assets/img/oldpc_desk.png") center center no-repeat;
   background-size: cover;
 }
 
 #screen {
+  all: unset;                /* removes all default styles */
   position: absolute;
-  width: 346px;
-  height: 320px;
-  top: calc(50% - 74px - 160px); /* center - offset upward */
+  width: var(--screen-w);
+  height: var(--screen-h);
+  top: var(--screen-top-calc);
   left: 50%;
   transform: translateX(-50%);
-  background-color: black;
-  overflow: hidden;
   cursor: pointer;
+  z-index: 20;
+  display: block;
 }
 
 #screen img {
