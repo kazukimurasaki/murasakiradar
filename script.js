@@ -7,7 +7,6 @@
   const RADAR_GIF = "assets/img/radar.gif";
   const FOUND_IMG = "assets/img/foundhisass.png";
 
-  // Only five working result pages now
   const RESULT_PAGES = [
     "assets/results/fighting.html",
     "assets/results/kensetsu.html",
@@ -16,20 +15,31 @@
     "assets/results/pain.html"
   ];
 
-  const SONAR_DURATION = 9966; // 9.966 seconds
-  const FOUND_WAIT = 3000;     // 3 seconds before redirect
+  const SONAR_DURATION = 9966;
+  const FOUND_WAIT = 3000;
 
   let active = false;
 
-  function showOnScreen(src, alt, fade = true) {
+  function showOnScreen(src, alt, fade = true, centered = false) {
     screenContent.innerHTML = "";
     const img = document.createElement("img");
     img.src = src;
     img.alt = alt || "";
-    if (fade) img.className = "fade-in";
-    img.style.width = "100%";
-    img.style.height = "100%";
-    img.style.objectFit = "cover";
+
+    // No fade animation unless specified
+    if (fade) img.classList.add("fade-in");
+
+    // Maintain consistent centering
+    img.style.position = "absolute";
+    img.style.top = "50%";
+    img.style.left = "50%";
+    img.style.transform = "translate(-50%, -50%)";
+    img.style.width = "92%";
+    img.style.height = "auto";
+    img.style.objectFit = "contain";
+    img.style.display = "block";
+    img.style.pointerEvents = "none";
+
     screenContent.appendChild(img);
   }
 
@@ -37,7 +47,8 @@
     if (active) return;
     active = true;
 
-    showOnScreen(RADAR_GIF, "Radar scanning");
+    // Instantly appear, perfectly centered
+    showOnScreen(RADAR_GIF, "Radar scanning", false, true);
 
     try {
       sonarAudio.currentTime = 0;
@@ -52,7 +63,8 @@
         sonarAudio.currentTime = 0;
       } catch (_) {}
 
-      showOnScreen(FOUND_IMG, "Murasaki Located", false);
+      // Replace instantly, no fade
+      showOnScreen(FOUND_IMG, "Murasaki Located", false, true);
 
       try {
         dokodemoAudio.currentTime = 0;
