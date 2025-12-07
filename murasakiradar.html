@@ -16,7 +16,7 @@
   :root {
     --screen-w: 346px;
     --screen-h: 320px;
-    --screen-top-calc: calc(30% - 100px);
+    --screen-top-calc: calc(30% - 75px);
     --accent-purple: #7d4071;
   }
 
@@ -87,13 +87,11 @@
 
 #screen-content img {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -65%) scale(0.65); /* shrink to 90% of original size */
-  width: auto;      /* keeps aspect ratio */
-  height: auto;     /* keeps aspect ratio */
-  max-width: 92%;   /* optional, adjust for bezel */
-  max-height: 92%;  /* optional, adjust for bezel */
+  transform: translate(-50%, -90%) scale(0.65);
+  width: auto;
+  height: auto;
+  max-width: 79%;
+  max-height: 79%;
   object-fit: contain;
   pointer-events: none;
 }
