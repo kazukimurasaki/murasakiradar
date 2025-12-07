@@ -89,14 +89,15 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 92%;           /* Adjust this between 88–95% for perfect fit */
-  height: auto;
+  transform: translate(-50%, -50%) scale(0.87); /* shrink to 90% of original size */
+  width: auto;      /* keeps aspect ratio */
+  height: auto;     /* keeps aspect ratio */
+  max-width: 92%;   /* optional, adjust for bezel */
+  max-height: 92%;  /* optional, adjust for bezel */
   object-fit: contain;
-  display: block;
   pointer-events: none;
 }
-
+  
   #screen:focus { outline: 2px solid rgba(125,64,113,0); }
 
   .fade-in {
