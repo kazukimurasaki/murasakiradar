@@ -15,21 +15,18 @@
     "assets/results/pain.html"
   ];
 
-  const SONAR_DURATION = 9966;
+  const SONAR_DURATION = 9966; // 9.966 seconds
   const FOUND_WAIT = 3000;
 
   let active = false;
 
-  function showOnScreen(src, alt, fade = true, centered = false) {
+  function showOnScreen(src, alt) {
     screenContent.innerHTML = "";
     const img = document.createElement("img");
     img.src = src;
     img.alt = alt || "";
 
-    // No fade animation unless specified
-    if (fade) img.classList.add("fade-in");
-
-    // Maintain consistent centering
+    // force exact centering and disable any animation
     img.style.position = "absolute";
     img.style.top = "50%";
     img.style.left = "50%";
@@ -39,6 +36,8 @@
     img.style.objectFit = "contain";
     img.style.display = "block";
     img.style.pointerEvents = "none";
+    img.style.animation = "none";
+    img.style.opacity = "1";
 
     screenContent.appendChild(img);
   }
@@ -47,8 +46,8 @@
     if (active) return;
     active = true;
 
-    // Instantly appear, perfectly centered
-    showOnScreen(RADAR_GIF, "Radar scanning", false, true);
+    // instantly show radar
+    showOnScreen(RADAR_GIF, "Radar scanning");
 
     try {
       sonarAudio.currentTime = 0;
@@ -63,8 +62,8 @@
         sonarAudio.currentTime = 0;
       } catch (_) {}
 
-      // Replace instantly, no fade
-      showOnScreen(FOUND_IMG, "Murasaki Located", false, true);
+      // instantly show "Murasaki Located"
+      showOnScreen(FOUND_IMG, "Murasaki Located");
 
       try {
         dokodemoAudio.currentTime = 0;
