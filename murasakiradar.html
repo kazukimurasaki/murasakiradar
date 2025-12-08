@@ -27,16 +27,20 @@
     font-family: "TheTojoCaptioner", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
   }
 
+  /* Background terminal frame */
   body {
     background-image: url("assets/img/terminal.png");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
+    position: relative;
+    z-index: 10; /* sits above the screen content */
   }
 
-  /* credits link (top-right) */
+  /* Credits link (top-right) */
   #credits-link {
     position: fixed;
     top: 12px;
@@ -49,14 +53,16 @@
   }
   #credits-link:hover { text-decoration: underline; }
 
-  /* container for interactive screen region (transparent hitbox) */
+  /* Screen container (lower layer) */
   #pc-container {
-    position: relative;
+    position: absolute;
     width: 100%;
     height: 100%;
     overflow: hidden;
+    z-index: 1; /* lower than background terminal */
   }
 
+  /* Transparent clickable hitbox */
   #screen {
     all: unset;
     position: absolute;
@@ -66,36 +72,41 @@
     left: 50%;
     transform: translateX(-50%);
     cursor: pointer;
-    z-index: 20;
+    z-index: 2; /* higher than content but below background frame */
     display: block;
   }
 
-  /* Remove focus/active outlines */
   #screen:focus,
   #screen:active {
     outline: none;
     box-shadow: none;
   }
 
+  /* Screen contents (the GIFs, etc.) */
   #screen-content {
     width: 100%;
     height: 100%;
+    position: relative;
     background: transparent;
     display: block;
     overflow: hidden;
+    z-index: 1; /* ensure under terminal.png */
   }
 
-#screen-content img {
-  position: absolute;
-  transform: translate(-50%, -90%) scale(0.58);
-  width: auto;
-  height: auto;
-  max-width: 79%;
-  max-height: 79%;
-  object-fit: contain;
-  pointer-events: none;
-}
-  
+  #screen-content img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -45%) scale(0.58);
+    width: auto;
+    height: auto;
+    max-width: 79%;
+    max-height: 79%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+
+  /* Hidden outline fix */
   #screen:focus { outline: 2px solid rgba(125,64,113,0); }
 
   .fade-in {
@@ -107,7 +118,11 @@
   }
 
   @media (max-width: 480px) {
-    :root { --screen-w: 240px; --screen-h: 222px; --screen-top-calc: calc(50% - 74px - 111px); }
+    :root {
+      --screen-w: 240px;
+      --screen-h: 222px;
+      --screen-top-calc: calc(50% - 74px - 111px);
+    }
     #credits-link { font-size: 13px; }
   }
 </style>
@@ -116,10 +131,10 @@
 
   <a id="credits-link" href="credits.html" rel="noopener">Credits</a>
 
+  <!-- Place screen content BELOW the terminal background -->
   <div id="pc-container" aria-hidden="false">
-    <button id="screen" aria-label="Activate radar" title="Click the monitor screen to scan for Murasaki">
-      <div id="screen-content" role="img" aria-live="polite"></div>
-    </button>
+    <div id="screen-content" role="img" aria-live="polite"></div>
+    <button id="screen" aria-label="Activate radar" title="Click the monitor screen to scan for Murasaki"></button>
   </div>
 
   <!-- Audio elements -->
